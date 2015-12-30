@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">-->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+<!-- Font Awesome -->
+<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">-->
+
+<!-- Bootstrap Themes -->
+<!-- https://bootswatch.com/ -->
+
+<style>
+  .one, .two, .three{
+    border-right-style: solid;
+    border-right-width: thin;
+    border-right-color: lightblue;
+    height: 800px;
+    overflow-y: scroll;
+  }
+</style>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-md-4">
+      <h1 class="text-center">r/funny</h1><hr>
+      <div class="one">
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <h1 class="text-center">r/photoshopbattles</h1><hr>
+      <div class="two">
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <h1 class="text-center">r/art</h1><hr>
+      <div class="three">
+      </div>
+    </div>
+
+  </div>
+</div> <!-- .container-fluid ends -->
+
+
+<script>
+
+  // accepts url, returns url to large stand alone image
+  jQuery.prototype.appendImg = function( url, tb ){
+      //console.log( url );
+      //console.log( $(this).append( url ) );
+
+      if( url.substring( url.lastIndexOf("."), url.length ) == ".jpg" ){ // straight photo
+
+        $(this).append( "<img class='img-responsive' src='"+ url +"'>" );
+
+      }else if( url.substring( url.lastIndexOf("."), url.length ) == ".gifv" ){ // video
+
+        $(this).append("<video class='img-responsive' preload='auto' autoplay='autoplay' muted='muted' loop='loop' style='width: 900px; height: 499px;'><source src='"+ url.substring(0,url.length-4) + "mp4" +"' type='video/mp4'></video>");
+
+      }else if( url.includes("imgur") ){ // imgur page
+
+        var _url = url.split("/");
+        if(_url[_url.length-1] == "/"){
+          id = _url[_url.length-2];
+        }else{
+          id = _url[_url.length-1];
+        }
+
+        $(this).append( "<img class='img-responsive' src='http://imgur.com/"+ id + ".jpg" +"'>" );
+
+      }else{
+
+        if(tb == "self"){ // show thumbnail or nothing
+
+          $(this).append("");
+
+        }else{
+
+          $(this).append( "<img class='img-responsive' src='"+ tb +"'>" );
+
+        }
+
+      }
+  }
+
+  $.ajax({
+    url: "https://www.reddit.com/r/funny/hot.json?count=25&limit=25"
+  }).done(function( data ) {
+
+      var array = data["data"]["children"];
+
+      for(var i=0; i<array.length; i++){
+          var title = data["data"]["children"][i]["data"]["title"];
+
+          var img = data["data"]["children"][i]["data"]["url"];
+          var tb = data["data"]["children"][i]["data"]["thumbnail"];
+
+          $(".one").append( "<div>" + title + "</div>");
+          $(".one").appendImg( img, tb );
+          $(".one").append( "<br><hr><br>" );
+      }
+  });
+
+  $.ajax({
+    url: "https://www.reddit.com/r/photoshopbattles/hot.json?count=25&limit=25"
+  }).done(function( data ) {
+
+      var array = data["data"]["children"];
+
+      for(var i=0; i<array.length; i++){
+          var title = data["data"]["children"][i]["data"]["title"];
+
+          var img = data["data"]["children"][i]["data"]["url"];
+          var tb = data["data"]["children"][i]["data"]["thumbnail"];
+
+          $(".two").append( "<div>" + title + "</div>");
+          $(".two").appendImg( img, tb );
+          $(".two").append( "<br><hr><br>" );
+      }
+
+  });
+
+  $.ajax({
+    url: "https://www.reddit.com/r/art/hot.json?count=25&limit=25"
+  }).done(function( data ) {
+
+      var array = data["data"]["children"];
+
+      for(var i=0; i<array.length; i++){
+          var title = data["data"]["children"][i]["data"]["title"];
+
+          var img = data["data"]["children"][i]["data"]["url"];
+          var tb = data["data"]["children"][i]["data"]["thumbnail"];
+
+          $(".three").append( "<div>" + title + "</div>");
+          $(".three").appendImg( img, tb );
+          $(".three").append( "<br><hr><br>" );
+      }
+  });
+
+  // TODO - listen for calls to add. Then add then add 10 posts after last in catagory
+  function add(){
+
+  }
+
+
+  // adjust heights
+  $(".one").css("height", parseInt($( window ).height()) - 100 + "px" );
+  $(".two").css("height", parseInt($( window ).height()) - 100 + "px" );
+  $(".three").css("height", parseInt($( window ).height()) - 100 + "px" );
+
+</script>
+</body></html>
