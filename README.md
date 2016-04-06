@@ -4,7 +4,7 @@ A web app using the [reddit api](https://www.reddit.com/dev/api) to display hot 
 
 Screenshot
 ---
-
+![](./screenshot.png)
 
 Notes
 ---
