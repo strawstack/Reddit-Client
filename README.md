@@ -8,4 +8,5 @@ Screenshot
 
 Notes
 ---
+View a [live demo here](https://strawstack.github.com/reddit_rh).
 Also, check out [reddit_psbattle](http://strawstack.github.io/reddit_psbattle/) for just the photoshopbattle feed.
