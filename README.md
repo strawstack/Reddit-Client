@@ -7,5 +7,4 @@ View a [live demo here](https://strawstack.github.io/RedditClient/).
 Screenshot
 ---
 
-[![](./screenshot.png)](https://strawstack.github.io/RedditClient/)
-
+[![](./screenshot1.png)](https://strawstack.github.io/RedditClient/)
